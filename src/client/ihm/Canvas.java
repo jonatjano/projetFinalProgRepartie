@@ -5,8 +5,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.Image;
+import javax.swing.event.MouseInputListener;
+import java.awt.event.MouseEvent;
 
-class Canvas extends JPanel
+class Canvas extends JPanel implements MouseInputListener
 {
 	BufferedImage image;
 
@@ -16,6 +19,7 @@ class Canvas extends JPanel
 
 		setBackground(Color.white);
 		image = new BufferedImage(2000, 2000, BufferedImage.TYPE_INT_ARGB);
+		draw();
 	}
 
 	/**
@@ -29,18 +33,41 @@ class Canvas extends JPanel
 
 		Graphics2D g2d = (Graphics2D) g;
 
-		// g2d.setColor(Color.blue);
-		// g2d.fillOval(10, 10, 50, 50);
-		// g2d.setColor(Color.orange);
-		// g2d.fillOval(10, 70, 50, 50);
-		// g2d.setColor(Color.black);
-		// g2d.setFont(g2d.getFont().deriveFont(40.0f));
-		// g2d.drawString("Dors / Pense", 70, 50);
-		// g2d.drawString("Mange", 70, 110);
+		g2d.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT), null, null);
+
 	}
 
 	void draw(String... params)
 	{
+		for (String param : params)
+		{
+			System.out.print(param + " , ");
+		}
+		System.out.println();
+
 		Graphics2D g2 = image.createGraphics();
+
+		g2.setColor(Color.blue);
+		g2.fillRect(500, 0, 1000, 1000);
+
+		g2.setColor(Color.white);
+		g2.fillOval(600, 300, 200, 400);
+
+		repaint();
 	}
+
+	public void mouseClicked(MouseEvent e)
+	{
+		// client.getMessageWriter().sendMessage(MessageHandler.DRAW_MESSAGE + ":" +  sendField.getText());
+	}
+	public void mouseDragged(MouseEvent e)
+	{
+		// client.getMessageWriter().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
+	}
+
+	public void mouseExited(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseMoved(MouseEvent e) {}
 }
