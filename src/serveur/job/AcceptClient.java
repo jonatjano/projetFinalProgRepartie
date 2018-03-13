@@ -13,7 +13,8 @@ import java.lang.Runtime;
 public class AcceptClient implements Runnable
 {
 	public static final String NAME_REQUEST_CLIENT   = "NAME_REQUEST";
-	public static final String RECEIVE_MESSAGE   = "NORMAL_MESSAGE";
+	public static final String NORMAL_MESSAGE   = "NORMAL_MESSAGE";
+	public static final String DRAW_MESSAGE   = "DRAW_MESSAGE";
 	public static final String DISCONNECT_CLIENT = "DISCONNECTED";
 	public static final String CONNECT_CLIENT = "CONNECTED";
 	public static final String NORMAL_COMMAND_TYPE = "NORMAL_COMMAND";
@@ -47,17 +48,19 @@ public class AcceptClient implements Runnable
 	
 	public void messageReceive(String s, GerantDeClient  gdc)
 	{
+		System.out.println("mm::" + s);
+		/*
 		if (!s.startsWith("/"))
 		{
 			for ( GerantDeClient gdcTemp : listGerantClient)
-				this.sendInfo( gdcTemp, AcceptClient.RECEIVE_MESSAGE , gdc.getName() + ":" + s);
+				this.sendInfo( gdcTemp, AcceptClient.NORMAL_MESSAGE , gdc.getName() + ":" + s);
 			
 			return;
 		}
 		if (s.length() <=  1)
 			return;
 		
-		CommandExec(s.substring(1), gdc);
+		CommandExec(s.substring(1), gdc);*/
 	}
 	
 	private void CommandExec(String commandString, GerantDeClient gdc)

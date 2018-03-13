@@ -8,10 +8,12 @@ import client.Client;
  */
 public class MessageHandler
 {
-	private static final String NAME_REQUEST = "NAME_REQUEST";
-	private static final String NORMAL_MESSAGE = "NORMAL_MESSAGE";
-	private static final String DISCONNECT = "DISCONNECTED";
-	private static final String CONNECT = "CONNECTED";
+	public static final String NAME_REQUEST = "NAME_REQUEST";
+	public static final String NORMAL_MESSAGE = "NORMAL_MESSAGE";
+	public static final String COMMAND_MESSAGE = "COMMAND_MESSAGE";
+	public static final String DRAW_MESSAGE = "DRAW_MESSAGE";
+	public static final String DISCONNECT = "DISCONNECTED";
+	public static final String CONNECT = "CONNECTED";
 
 	public static final String NORMAL_COMMAND = "NORMAL_COMMAND";
 	public static final String ERROR_COMMAND = "ERROR_COMMAND";
@@ -36,6 +38,9 @@ public class MessageHandler
 				break;
 			case NORMAL_MESSAGE:
 				this.client.getIhm().printMessage(messageBody.substring(0, messageBody.indexOf(":")) + " : " + messageBody.substring(messageBody.indexOf(":") + 1));
+				break;
+			case DRAW_MESSAGE:
+				this.client.getIhm().draw(messageBody.split(":"));
 				break;
 			case DISCONNECT:
 				this.client.getIhm().printMessage("Deconnexion de : " + messageBody);

@@ -22,7 +22,7 @@ public class IHMConsol extends IHM
 	}
 
 	public void pMessage(int numMsg, String s)
-	{
+	{/*
 		switch (numMsg)
 		{
 			case IHM.SERVER_INFO:
@@ -44,7 +44,7 @@ public class IHMConsol extends IHM
 			default:
 				System.out.println("type de message inconnue");
 				break;
-		}
+		}*/
 
 	}
 }
