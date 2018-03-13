@@ -141,8 +141,8 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 			String message = sendField.getText().replaceAll("[ \t\n]", "");
 			if (!message.equals(""))
 			{
-				if (sendField.getText().startsWidth("/"))
-					client.getMessageWriter().sendMessage(MessageHandler.COMMAND_MESSAGE + ":" + sendField.getText().substring(1));
+				if (sendField.getText().startsWith("/"))
+					client.getMessageWriter().sendMessage(MessageHandler.COMMAND_MESSAGE + ":" + sendField.getText());
 				else
 					client.getMessageWriter().sendMessage(MessageHandler.NORMAL_MESSAGE + ":" +  sendField.getText());
 				sendField.setText("");

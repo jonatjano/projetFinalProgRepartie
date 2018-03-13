@@ -14,6 +14,7 @@ public class AcceptClient implements Runnable
 {
 	public static final String NAME_REQUEST_CLIENT   = "NAME_REQUEST";
 	public static final String NORMAL_MESSAGE   = "NORMAL_MESSAGE";
+	public static final String COMMAND_MESSAGE   = "COMMAND_MESSAGE";
 	public static final String DRAW_MESSAGE   = "DRAW_MESSAGE";
 	public static final String DISCONNECT_CLIENT = "DISCONNECTED";
 	public static final String CONNECT_CLIENT = "CONNECTED";
@@ -48,19 +49,28 @@ public class AcceptClient implements Runnable
 	
 	public void messageReceive(String s, GerantDeClient  gdc)
 	{
-		System.out.println("mm::" + s);
-		/*
-		if (!s.startsWith("/"))
+		String messageType = s.substring(0, s.indexOf(":"));
+		String messageBody = s.substring(s.indexOf(":") + 1);
+		
+		if (messageType.equals(AcceptClient.NORMAL_MESSAGE))
 		{
 			for ( GerantDeClient gdcTemp : listGerantClient)
-				this.sendInfo( gdcTemp, AcceptClient.NORMAL_MESSAGE , gdc.getName() + ":" + s);
+				this.sendInfo( gdcTemp, AcceptClient.NORMAL_MESSAGE , gdc.getName() + ":" + messageBody);
 			
 			return;
 		}
-		if (s.length() <=  1)
-			return;
 		
-		CommandExec(s.substring(1), gdc);*/
+		if (messageType.equals(AcceptClient.DRAW_MESSAGE))
+		{
+			for ( GerantDeClient gdcTemp : listGerantClient)
+				this.sendInfo( gdcTemp, AcceptClient.DRAW_MESSAGE ,":" + messageBody);
+			
+			return;
+		}
+		
+		if (messageType.equals(AcceptClient.COMMAND_MESSAGE))
+			if (messageBody.length() >  1)
+				CommandExec(messageBody.substring(1), gdc);
 	}
 	
 	private void CommandExec(String commandString, GerantDeClient gdc)
