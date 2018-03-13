@@ -10,7 +10,6 @@ import client.job.MessageWriter;
 import client.job.MessageHandler;
 
 import client.ihm.IHM;
-import client.ihm.IHMCui;
 import client.ihm.IHMSwing;
 
 /**
