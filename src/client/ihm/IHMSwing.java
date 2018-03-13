@@ -1,29 +1,30 @@
 package client.ihm;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-
 import client.Client;
 import client.job.MessageHandler;
 
-import javax.swing.text.StyleConstants;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.StyleContext;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 public class IHMSwing extends IHM implements KeyListener, ActionListener
 {
@@ -31,6 +32,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 	private JTextPane recepField;
 	private JTextField sendField;
 	private JButton sendButton;
+	private Canvas canvas;
 
 	public IHMSwing()
 	{
@@ -39,10 +41,12 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		JPanel chatPanel = new JPanel(new BorderLayout());
+
 		recepField = new JTextPane();
 		recepField.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(recepField);
-		frame.add(scrollPane, BorderLayout.CENTER);
+		chatPanel.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel botPanel = new JPanel(new BorderLayout());
 		{
@@ -54,10 +58,31 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 			sendButton.addActionListener(this);
 			botPanel.add(sendButton, BorderLayout.EAST);
 		}
-		frame.add(botPanel, BorderLayout.SOUTH);
+		chatPanel.add(botPanel, BorderLayout.SOUTH);
+		frame.add(chatPanel, BorderLayout.EAST);
+
+		canvas = new Canvas();
+		frame.add(canvas);
+
+
+		frame.addComponentListener(new ComponentListener() {
+		    public void componentResized(ComponentEvent e) {
+				chatPanel.setPreferredSize(new Dimension(frame.getWidth() / 4, 1));
+				SwingUtilities.updateComponentTreeUI(frame);
+		    }
+
+		    public void componentHidden(ComponentEvent e) {}
+		    public void componentShown(ComponentEvent e) {}
+		    public void componentMoved(ComponentEvent e) {}
+		});
 
 		frame.setSize(800, 600);
 		frame.setVisible(true);
+	}
+
+	public void draw(String... params)
+	{
+		canvas.draw(params);
 	}
 
 	public void printMessage(String message, Color color)
@@ -136,13 +161,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 		}
 	}
 
-	public void keyReleased(KeyEvent e)
-	{
-		// TODO
-	}
+	public void keyReleased(KeyEvent e) {}
 
-	public void keyTyped(KeyEvent e)
-	{
-		// TODO
-	}
+	public void keyTyped(KeyEvent e) {}
 }

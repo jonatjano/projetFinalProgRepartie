@@ -1,3 +1,4 @@
+src/client/ihm/Canvas.java
 src/client/ihm/IHM.java
 src/client/ihm/IHMSwing.java
 src/client/job/MessageHandler.java
