@@ -27,5 +27,7 @@ public abstract class IHM
 
 	public abstract void printMessage(String message, String style);
 
+	public abstract void draw(String... params);
+
 	public abstract String askPseudo();
 }
