@@ -36,6 +36,18 @@ public class AcceptClient implements Runnable
 		Command.setAcceptClient(this);
 		this.listGerantClient = new ArrayList<GerantDeClient>();
 		this.listThreadGerantClient = new ArrayList<Thread>();
+		/*new Thread(
+			new Runnable()
+			{
+				public void run()
+				{
+					try{
+						Thread.sleep(10000);
+					} catch(Exception e){}
+					messageReceive(DRAW_MESSAGE + ":" + "ertyfgjghgdfsfgh", null);
+				}
+			}
+				  ).start();*/
 	}
 	
 	void sendInfo(GerantDeClient gdc, String type, String s)
@@ -62,8 +74,11 @@ public class AcceptClient implements Runnable
 		
 		if (messageType.equals(AcceptClient.DRAW_MESSAGE))
 		{
-			for ( GerantDeClient gdcTemp : listGerantClient)
-				this.sendInfo( gdcTemp, AcceptClient.DRAW_MESSAGE ,":" + messageBody);
+			String[] tram = Form.newForm(messageBody);
+			
+			if (tram != null)
+				for ( GerantDeClient gdcTemp : listGerantClient)
+					this.sendInfo( gdcTemp, tram[0] , tram[1]);
 			
 			return;
 		}
