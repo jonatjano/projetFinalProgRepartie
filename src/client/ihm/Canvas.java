@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ class Canvas extends JPanel implements MouseInputListener
 {
 	private List<Form> forms;
 	private IHM ihm;
+	private BufferedImage image;
 
 	Canvas(IHM ihm)
 	{
@@ -28,6 +30,7 @@ class Canvas extends JPanel implements MouseInputListener
 		this.ihm = ihm;
 		addMouseMotionListener(this);
 		setBackground(Color.white);
+		image = new BufferedImage(1500, 1500, BufferedImage.TYPE_INT_ARGB);
 		draw("clear");
 	}
 
@@ -42,20 +45,8 @@ class Canvas extends JPanel implements MouseInputListener
 
 		Graphics2D g2d = (Graphics2D) g;
 
-		for (Form form : forms)
-		{
-			g2.setColor(form.getColor());
-			int[] formParams = form.getParams();
-			switch (form.getType())
-			{
-				case "square":
-					g2.fillRect(formParams[0], formParams[1], formParams[2], formParams[2]);
-				break;
-				case "circle":
-					g2.fillOval(formParams[0] - formParams[2], formParams[1] - formParams[2], 2 * formParams[2], 2 * formParams[2]);
-				break;
-			}
-		}
+		g2d.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH), null, null);
+
 	}
 
 /*
@@ -116,7 +107,20 @@ param :
 	{
 		Graphics2D g2 = image.createGraphics();
 
-
+		for (Form form : forms)
+		{
+			g2.setColor(form.getColor());
+			int[] formParams = form.getParams();
+			switch (form.getType())
+			{
+				case "square":
+					g2.fillRect(formParams[0], formParams[1], formParams[2], formParams[2]);
+				break;
+				case "circle":
+					g2.fillOval(formParams[0] - formParams[2], formParams[1] - formParams[2], 2 * formParams[2], 2 * formParams[2]);
+				break;
+			}
+		}
 	}
 
 	public void mouseClicked(MouseEvent e)
