@@ -10,13 +10,9 @@ public class MessageHandler
 {
 	public static final String NAME_REQUEST = "NAME_REQUEST";
 	public static final String NORMAL_MESSAGE = "NORMAL_MESSAGE";
-	public static final String COMMAND_MESSAGE = "COMMAND_MESSAGE";
 	public static final String DRAW_MESSAGE = "DRAW_MESSAGE";
 	public static final String DISCONNECT = "DISCONNECTED";
 	public static final String CONNECT = "CONNECTED";
-
-	public static final String NORMAL_COMMAND = "NORMAL_COMMAND";
-	public static final String ERROR_COMMAND = "ERROR_COMMAND";
 
 
 	Client client;
@@ -47,12 +43,6 @@ public class MessageHandler
 				break;
 			case CONNECT:
 				this.client.getIhm().printMessage("Connexion de : " + messageBody);
-				break;
-			case NORMAL_COMMAND:
-				this.client.getIhm().printMessage(messageBody.replaceAll("\\\\n","\n").replaceAll("\\\\t","\t"), NORMAL_COMMAND);
-				break;
-			case ERROR_COMMAND:
-				this.client.getIhm().printMessage(messageBody.replaceAll("\\\\n","\n").replaceAll("\\\\t","\t"), ERROR_COMMAND);
 				break;
 		}
 	}
