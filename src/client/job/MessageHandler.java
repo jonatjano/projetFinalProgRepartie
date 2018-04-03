@@ -30,7 +30,7 @@ public class MessageHandler
 		switch (messageType)
 		{
 			case NAME_REQUEST:
-				this.client.getMessageWriter().sendMessage(this.client.getIhm().askPseudo());
+				this.client.getNetwork().sendMessage(this.client.getIhm().askPseudo());
 				break;
 			case NORMAL_MESSAGE:
 				this.client.getIhm().printMessage(messageBody.substring(0, messageBody.indexOf(":")) + " : " + messageBody.substring(messageBody.indexOf(":") + 1));

@@ -10,6 +10,5 @@ src/client/job/MessageHandler.java
 src/client/job/form/Circle.java
 src/client/job/form/Form.java
 src/client/job/form/Square.java
-src/client/job/MessageWriter.java
-src/client/job/MessageReceiver.java
+src/client/job/Network.java
 src/client/Client.java

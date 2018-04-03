@@ -4,28 +4,30 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.net.MulticastSocket;
+import java.net.InetAddress;
 
 /**
  * @author Jonathan Selle, Adam Bernouy
  * @version 2017-12-23
  */
-public class MessageReceiver implements Runnable
+public class Network implements Runnable
 {
 	private MessageHandler msgHandler;
 	private MulticastSocket ms;
 	private boolean stop;
 
-	public Network(String IP, int port, MessageHandler msgHandler)
+	public Network(String ip, int port, MessageHandler msgHandler)
 	{
 		stop = false;
-		
-		this.ms = new MulticastSocket( InetAddress.getByName (IP) );
+
+		this.ms = new MulticastSocket( InetAddress.getByName (ip) );
 		this.msgHandler = msgHandler;
 	}
-	
+
 	public void sendMessage(String message)
 	{
-		writer.println(message);
+		// TODO writer.println(message);
 	}
 
 	public void run()
@@ -33,7 +35,7 @@ public class MessageReceiver implements Runnable
 		while (!stop)
 		{
 			try {
-				String line = reader.readLine();
+				String line = ""; // TODO reader.readLine();
 				msgHandler.onMessage(line);
 			}
 			catch (Exception e) {

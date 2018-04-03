@@ -93,17 +93,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 
 	public void printMessage(String message, String style)
 	{
-		switch (style)
-		{
-			case MessageHandler.NORMAL_COMMAND:
-				appendToPane(message, Color.BLUE);
-			break;
-			case MessageHandler.ERROR_COMMAND:
-				appendToPane(message, Color.RED);
-			break;
-			default:
-				appendToPane(message, Color.BLACK);
-		}
+		appendToPane(message, Color.BLACK);
 	}
 
 	public String askPseudo()
@@ -142,7 +132,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 			String message = sendField.getText().replaceAll("[ \t\n]", "");
 			if (!message.equals(""))
 			{
-				client.getMessageWriter().sendMessage(MessageHandler.NORMAL_MESSAGE + ":" +  sendField.getText());
+				client.getNetwork().sendMessage(MessageHandler.NORMAL_MESSAGE + ":" +  sendField.getText());
 				sendField.setText("");
 			}
 		}

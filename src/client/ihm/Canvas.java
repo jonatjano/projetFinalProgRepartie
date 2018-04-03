@@ -10,7 +10,6 @@ import javax.swing.event.MouseInputListener;
 import java.awt.event.MouseEvent;
 import client.job.MessageHandler;
 import client.Client;
-import client.job.MessageWriter;
 
 class Canvas extends JPanel implements MouseInputListener
 {
@@ -63,15 +62,33 @@ class Canvas extends JPanel implements MouseInputListener
 		repaint();
 	}
 
+/*
+draw:FORM:RGBA:PLEIN:ARG...
+	draw:CARRE:RGBA:REMPLISSAGE:X:Y:COTE
+	draw:CERCLE:RGBA:REMPLISSAGE:X:Y:RAYON
+
+del:X:Y
+
+clear:X:Y
+
+param :
+	FONC : draw | del
+	RGBA : hexa
+	REMPLISAGE : 0, 1, 2
+	FORM : CARRE | CERCLE
+	pos : entier[2]
+	COTE | RAYON : entier
+ */
+
 	public void mouseClicked(MouseEvent e)
 	{
-		ihm.getClient().getMessageWriter().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
+		ihm.getClient().getNetwork().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
 		System.out.println("envoi de : " + MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
 	}
 
 	public void mouseDragged(MouseEvent e)
 	{
-		ihm.getClient().getMessageWriter().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE::1,10,100,1000,1000");
+		ihm.getClient().getNetwork().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE::1,10,100,1000,1000");
 		System.out.println("envoi de : " + MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
 	}
 

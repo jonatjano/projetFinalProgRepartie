@@ -5,8 +5,7 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import client.job.MessageReceiver;
-import client.job.MessageWriter;
+import client.job.Network;
 import client.job.MessageHandler;
 
 import client.ihm.IHM;
@@ -33,19 +32,15 @@ public class Client
 	Socket socket;
 
 	/**
-	 * objet gérant la reception de message venant du serveur (ne les traite pas)
-	 * @see msgHandler
+	 * objet gérant l'envoi et la reception de message venant du serveur (ne les traite pas)
+	 * @see Network
 	 */
-	MessageReceiver msgReceiver;
+	Network network;
 	/**
 	 * Thread de msgIn
 	 * @see msgReceiver
 	 */
 	Thread threadReceiver;
-	/**
-	 * objet gérant l'envoi des messages au serveur
-	 */
-	MessageWriter msgWriter;
 	/**
 	 * objet traitant les messages venant du serveur
 	 */
@@ -67,17 +62,12 @@ public class Client
 		{
 			socket = new Socket(ip, port);
 
-			msgWriter = new MessageWriter(socket.getOutputStream());
-
 			msgHandler = new MessageHandler(this);
 
-			msgReceiver = new MessageReceiver(socket.getInputStream(), msgHandler);
-			// new PrintWriter
+			network = new Network(socket.getInputStream(), msgHandler);
 
-			threadReceiver = new Thread(msgReceiver);
+			threadReceiver = new Thread(network);
 			threadReceiver.start();
-
-			//msgWriter.sendMessage(ihm.askPseudo());
 		}
 		catch (ConnectException myException) {
 			System.out.println("connection refusée");
@@ -94,9 +84,9 @@ public class Client
 		}
 	}
 
-	public MessageWriter getMessageWriter()
+	public Network getNetwork()
 	{
-		return msgWriter;
+		return network;
 	}
 
 	public IHM getIhm()
