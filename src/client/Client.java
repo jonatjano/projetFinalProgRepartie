@@ -91,6 +91,11 @@ public class Client
 	{
 		return network;
 	}
+	
+	public void reSend()
+	{
+		//TODO envoie toutes les formes a tout le monde.
+	}
 
 	public IHM getIhm()
 	{

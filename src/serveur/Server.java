@@ -82,6 +82,7 @@ public class Server
 			ihm.pMessage(IHM.SERVER_INFO, this.getIp() + ":" + port);
 
 			this.client = new Client (this.getIp(), port);
+			this.client.reSend();
 		}
 		catch(Exception e)
 		{
