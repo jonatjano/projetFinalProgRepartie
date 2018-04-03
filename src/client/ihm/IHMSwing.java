@@ -34,6 +34,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 	private JTextField sendField;
 	private JButton sendButton;
 	private Canvas canvas;
+	private String pseudo;
 
 	public IHMSwing(Client client)
 	{
@@ -82,11 +83,13 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 		frame.setSize(800, 600);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
+
+		pseudo = askPseudo();
 	}
 
-	public void draw(String... params)
+	public void draw(String type, String... params)
 	{
-		canvas.draw(params);
+		canvas.draw(type, params);
 	}
 
 	public void printMessage(String message, Color color)
@@ -135,7 +138,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 			String message = sendField.getText().replaceAll("[ \t\n]", "");
 			if (!message.equals(""))
 			{
-				client.getNetwork().sendMessage(MessageHandler.NORMAL_MESSAGE + ":" +  sendField.getText());
+				client.getNetwork().sendMessage(MessageHandler.NORMAL_MESSAGE + ":" + pseudo + " : " +  sendField.getText());
 				sendField.setText("");
 			}
 		}

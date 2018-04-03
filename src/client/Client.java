@@ -10,6 +10,7 @@ import client.job.MessageHandler;
 
 import client.ihm.IHM;
 import client.ihm.IHMSwing;
+import client.ihm.IHMServer;
 
 /**
  * @author Jonathan Selle, Adam Bernouy
@@ -58,8 +59,26 @@ public class Client
 	 */
 	public Client(String ip, int port)
 	{
-		ihm = new IHMSwing(this);
-		
+		this(ip, port, false);
+	}
+
+	/**
+	 * Creer un client en initialisant une Socket de mêmes parametres puis les objets de gestion des messages et l'IHM
+	 * @param  ip           l'ip de la Socket à initialiser
+	 * @param  port         le port de la Socket à initialiser
+	 * @param
+	 */
+	public Client(String ip, int port, boolean hasIHM)
+	{
+		if (hasIHM)
+		{
+			ihm = new IHMSwing(this);
+		}
+		else
+		{
+			ihm = new IHMServer(this);
+		}
+
 		msgHandler = new MessageHandler(this);
 
 		network = new Network(ip, port, msgHandler);
@@ -137,6 +156,6 @@ public class Client
 				System.out.println("Le port entré " + args[1] + " n'est pas valide, le port par defaut (" + DEFAULT_PORT + ") va être utilisé");
 			}
 		}
-		new Client(ip, port);
+		new Client(ip, port, true);
 	}
 }

@@ -1,4 +1,4 @@
-package commun.form;
+package client.job.form;
 
 import java.awt.Color;
 
@@ -17,29 +17,40 @@ public abstract class Form
 
 	public abstract boolean isAt (int posX, int posY);
 
+	public abstract String getType ();
 
-	public static Form fromTram(String message)
+	public abstract int[] getParams ();
+
+	public Color getColor()
 	{
-		String formName = message.substring(0, message.indexOf(":"));
-		String[] arg  = message.substring(message.indexOf(":") + 1).split(":");
+		return color;
+	}
+
+	public static Form fromTram(String... message)
+	{
+		String formName = message[0];
+		System.out.println(formName);
 
 		Form form = null;
 
-		boolean isNew = (arg[0] == "draw");
-		Color color = Color.getColor(arg[1]);
+		Color color = Color.getColor(message[1]);
 		if (color == null)
 		{
 			color = Color.black;
 		}
-		int filling = Integer.parseInt(arg[2]);
+		int filling = Integer.parseInt(message[2]);
 
-		switch (formName)
+		try
 		{
-			case "SQUARE":
-				form = new Square (color, filling);
-			case "CIRCLE":
-				form = new Circle (color, filling);
+			switch (formName)
+			{
+				case "SQUARE":
+				form = new Square (color, filling, Integer.parseInt(message[3]), Integer.parseInt(message[4]), Integer.parseInt(message[5]));
+				case "CIRCLE":
+				form = new Circle (color, filling, Integer.parseInt(message[3]), Integer.parseInt(message[4]), Integer.parseInt(message[5]));
+			}
 		}
+		catch (Exception e) {}
 
 		return form;
 	}

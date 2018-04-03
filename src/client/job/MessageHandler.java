@@ -24,6 +24,7 @@ public class MessageHandler
 
 	void onMessage(String message)
 	{
+		System.out.println(message);
 		String messageType = message.substring(0, message.indexOf(":"));
 		String messageBody = message.substring(message.indexOf(":") + 1);
 
@@ -33,7 +34,8 @@ public class MessageHandler
 				this.client.getNetwork().sendMessage(this.client.getIhm().askPseudo());
 				break;
 			case NORMAL_MESSAGE:
-				this.client.getIhm().printMessage(messageBody.substring(0, messageBody.indexOf(":")) + " : " + messageBody.substring(messageBody.indexOf(":") + 1));
+				System.out.println(messageBody);
+				this.client.getIhm().printMessage(messageBody);
 				break;
 			case DRAW_MESSAGE:
 				this.client.getIhm().draw(messageBody.split(":"));

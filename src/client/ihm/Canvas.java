@@ -1,30 +1,34 @@
 package client.ihm;
 
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.Image;
-import javax.swing.event.MouseInputListener;
-import java.awt.event.MouseEvent;
-import client.job.MessageHandler;
 import client.Client;
+import client.job.form.*;
+import client.job.MessageHandler;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+import javax.swing.event.MouseInputListener;
 
 class Canvas extends JPanel implements MouseInputListener
 {
+	private List<Form> forms;
 	private IHM ihm;
-	private BufferedImage image;
 
 	Canvas(IHM ihm)
 	{
 		super();
 
+		forms = new ArrayList<Form>();
 		this.ihm = ihm;
 		addMouseMotionListener(this);
 		setBackground(Color.white);
-		image = new BufferedImage(1500, 1500, BufferedImage.TYPE_INT_ARGB);
-		draw();
+		draw("clear");
 	}
 
 	/**
@@ -38,28 +42,20 @@ class Canvas extends JPanel implements MouseInputListener
 
 		Graphics2D g2d = (Graphics2D) g;
 
-		g2d.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH), null, null);
-
-	}
-
-	void draw(String... params)
-	{
-		// System.out.print("reception de : ");
-		// for (String param : params)
-		// {
-		// 	System.out.print(param + " , ");
-		// }
-		// System.out.println();
-
-		Graphics2D g2 = image.createGraphics();
-
-		g2.setColor(Color.black);
-		g2.fillOval(600, 300, 200, 400);
-
-		g2.setColor(Color.white);
-		g2.fillRect(700, 500, 1, 1);
-
-		repaint();
+		for (Form form : forms)
+		{
+			g2.setColor(form.getColor());
+			int[] formParams = form.getParams();
+			switch (form.getType())
+			{
+				case "square":
+					g2.fillRect(formParams[0], formParams[1], formParams[2], formParams[2]);
+				break;
+				case "circle":
+					g2.fillOval(formParams[0] - formParams[2], formParams[1] - formParams[2], 2 * formParams[2], 2 * formParams[2]);
+				break;
+			}
+		}
 	}
 
 /*
@@ -69,7 +65,7 @@ draw:FORM:RGBA:PLEIN:ARG...
 
 del:X:Y
 
-clear:X:Y
+clear
 
 param :
 	FONC : draw | del
@@ -80,16 +76,62 @@ param :
 	COTE | RAYON : entier
  */
 
+	void draw(String type, String... params)
+	{
+		try
+		{
+			System.out.println(type + " " + params[0]);
+			switch (type)
+			{
+				case "DRAW":
+					forms.add(Form.fromTram(params));
+					System.out.println(forms.size());
+					redrawImage();
+				break;
+
+				case "DEL":
+					for (int i = forms.size() - 1; i >= 0; i--)
+					{
+						if (forms.get(i).isAt( Integer.parseInt(params[0]), Integer.parseInt(params[1]) ))
+						{
+							forms.remove(i);
+						}
+					}
+
+					redrawImage();
+				break;
+
+				case "CLEAR":
+					forms.clear();
+				break;
+			}
+
+			repaint();
+		}
+		catch (Exception e) {}
+
+	}
+
+	private void redrawImage()
+	{
+		Graphics2D g2 = image.createGraphics();
+
+
+	}
+
 	public void mouseClicked(MouseEvent e)
 	{
-		ihm.getClient().getNetwork().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
-		System.out.println("envoi de : " + MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
+		String message = MessageHandler.DRAW_MESSAGE + ":DRAW:" + "SQUARE" + ":" + "#ff0000" + ":" +  "2" + ":" + e.getX() + ":" + e.getY() + ":" + "10";
+		ihm.getClient().getNetwork().sendMessage(message);
+		System.out.println("envoi de : " + message);
 	}
 
 	public void mouseDragged(MouseEvent e)
 	{
-		ihm.getClient().getNetwork().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE::1,10,100,1000,1000");
-		System.out.println("envoi de : " + MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
+		System.out.println(e.getX() + " " + e.getY());
+		String message = MessageHandler.DRAW_MESSAGE + ":DRAW:" + "SQUARE" + ":" + "#ff0000" + ":" +  "2" + ":" + e.getX() + ":" + e.getY() + ":" + "10";
+		ihm.getClient().getNetwork().sendMessage(message);
+		System.out.println(message);
 	}
 
 	public void mouseExited(MouseEvent e) {}

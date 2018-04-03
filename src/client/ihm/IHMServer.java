@@ -3,7 +3,7 @@ package client.ihm;
 import java.awt.Color;
 import client.Client;
 
-public abstract class IHMServer extends IHM
+public class IHMServer extends IHM
 {
 	public IHMServer(Client client)
 	{
@@ -14,7 +14,7 @@ public abstract class IHMServer extends IHM
 
 	public void printMessage(String message, String style) {}
 
-	public void draw(String... params) {}
+	public void draw(String type, String... params) {}
 
 	public String askPseudo()
 	{

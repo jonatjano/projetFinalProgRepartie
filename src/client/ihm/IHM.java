@@ -37,7 +37,19 @@ public abstract class IHM
 
 	public abstract void printMessage(String message, String style);
 
-	public abstract void draw(String... params);
+	public abstract void draw(String type, String... params);
+
+	public void draw(String... params)
+	{
+		String[] finalParams = new String[params.length - 1];
+
+		for(int i = 1; i < params.length; i++)
+		{
+			finalParams [i - 1] = params[i];
+		}
+
+		draw(params[0], finalParams);
+	}
 
 	public abstract String askPseudo();
 }
