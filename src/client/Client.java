@@ -58,13 +58,14 @@ public class Client
 	 */
 	public Client(String ip, int port)
 	{
+		ihm = new IHMSwing(this);
 		try
 		{
 			socket = new Socket(ip, port);
 
 			msgHandler = new MessageHandler(this);
 
-			network = new Network(socket.getInputStream(), msgHandler);
+			network = new Network(ip, port, msgHandler);
 
 			threadReceiver = new Thread(network);
 			threadReceiver.start();
@@ -111,8 +112,6 @@ public class Client
 	 */
 	public static void main(String[] args)
 	{
-		ihm = new IHMSwing();
-
 		String ip = DEFAULT_IP;
 		int port = DEFAULT_PORT;
 
@@ -155,7 +154,6 @@ public class Client
 				System.out.println("Le port entré " + args[1] + " n'est pas valide, le port par defaut (" + DEFAULT_PORT + ") va être utilisé");
 			}
 		}
-
-		ihm.setClient(new Client(ip, port));
+		new Client(ip, port);
 	}
 }

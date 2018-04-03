@@ -25,6 +25,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import client.Client;
 
 public class IHMSwing extends IHM implements KeyListener, ActionListener
 {
@@ -34,8 +35,10 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 	private JButton sendButton;
 	private Canvas canvas;
 
-	public IHMSwing()
+	public IHMSwing(Client client)
 	{
+		super(client);
+
 		frame = new JFrame("Client");
 		frame.setLayout(new BorderLayout());
 

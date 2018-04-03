@@ -8,15 +8,20 @@ public abstract class IHM
 {
 	protected Client client;
 
-	public boolean setClient(Client client)
+	public IHM(Client client)
 	{
-		if (this.client == null)
-		{
-			this.client = client;
-			return true;
-		}
-		return false;
+		this.client = client;
 	}
+
+	// public boolean setClient(Client client)
+	// {
+	// 	if (this.client == null)
+	// 	{
+	// 		this.client = client;
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	public void printMessage(String message)
 	{
