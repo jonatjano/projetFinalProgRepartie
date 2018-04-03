@@ -3,6 +3,7 @@ package server;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.net.Inet4Address;
+import java.net.DatagramSocket;
 
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -10,6 +11,8 @@ import java.io.InputStreamReader;
 
 import java.util.Map;
 import java.util.HashMap;
+
+import client.Client;
 
 import server.job.AcceptClient;
 import server.ihm.IHM;
@@ -19,10 +22,17 @@ import server.ihm.IHMConsol;
 public class Server
 {
 	public static final int DEFAULT_PORT = 6000;
+	
+	public static final String DEFAULT_MULT_CAST_IP = "231.246.46.52";
+	public static final int DEFAULT_MULT_CAST_PORT = 2375;
 
 	private static Map<String, String> config;
+	
+	private Client client;
 
-	private ServerSocket serverSock;
+	private String mCastIP;	
+	private int mCastPort;
+	
 	private AcceptClient accCli;
 	private Thread thAccCli;
 	private IHM ihm;
@@ -43,23 +53,34 @@ public class Server
 
 		return Inet4Address.getLocalHost().getHostAddress();
 	}
+	
+	public String getMultiCast()
+	{
+		return this.mCastIP + ":" + this.mCastPort;
+		
+	}
 
 	public Server(IHM ihm)
 	{
 		this(Server.DEFAULT_PORT, ihm);
 	}
+	
 
 	public Server(int port, IHM ihm)
 	{
 		try
 		{
-			this.serverSock = new ServerSocket(port);
-			this.accCli = new AcceptClient(serverSock, this);
+			this.mCastIP = Server.DEFAULT_MULT_CAST_IP;
+			this.mCastPort = Server.DEFAULT_MULT_CAST_PORT;
+			
+			this.accCli = new AcceptClient(this, this.port);
 			this.thAccCli = new Thread(this.accCli);
 			this.thAccCli.start();
 
 			this.ihm = ihm;
 			ihm.pMessage(IHM.SERVER_INFO, this.getIp() + ":" + port);
+			
+			this.client = new Client (this.getIp(), port);
 		}
 		catch(Exception e)
 		{
