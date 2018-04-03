@@ -58,30 +58,12 @@ public class Client
 	 */
 	public Client(String ip, int port)
 	{
-		try
-		{
-			socket = new Socket(ip, port);
-
 			msgHandler = new MessageHandler(this);
 
-			network = new Network(socket.getInputStream(), msgHandler);
+			network = new Network(ip, port, msgHandler);
 
 			threadReceiver = new Thread(network);
 			threadReceiver.start();
-		}
-		catch (ConnectException myException) {
-			System.out.println("connection refusée");
-		}
-		catch (UnknownHostException myException)
-		{
-			System.out.println("hôte inconnu");
-			// myException.printStackTrace();
-		}
-		catch (IOException myException)
-		{
-			System.out.println("erreur lors de la connection, veuillez réesayer");
-			// myException.printStackTrace();
-		}
 	}
 
 	public Network getNetwork()

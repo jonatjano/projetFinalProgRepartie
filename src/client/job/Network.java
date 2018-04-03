@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+
 import java.net.MulticastSocket;
 import java.net.InetAddress;
+import java.net.DatagramPacket;
 
 /**
  * @author Jonathan Selle, Adam Bernouy
@@ -15,26 +17,53 @@ public class Network implements Runnable
 {
 	private MessageHandler msgHandler;
 	private MulticastSocket ms;
+	private InetAddress mcast;
+	private int port;
 	private boolean stop;
 
 	public Network(String ip, int port, MessageHandler msgHandler)
 	{
-		stop = false;
-
-		this.ms = new MulticastSocket( InetAddress.getByName (ip) );
-		this.msgHandler = msgHandler;
+		try
+		{
+			this.stop = false;
+			this.port = port;
+			this.ms = new MulticastSocket(port);
+			this.mcast = InetAddress.getByName (ip);
+			
+			ms.joinGroup ( mcast );
+			this.msgHandler = msgHandler;	
+		} catch (Exception e) {}
 	}
 
 	public void sendMessage(String message)
 	{
-		// TODO writer.println(message);
+		try
+		{
+			DatagramPacket dp = new DatagramPacket (message.getBytes("UTF-8"), message.getBytes("UTF-8").length, this.mcast, this.port);	
+		} catch (Exception e) {}
 	}
 
 	public void run()
 	{
 		while (!stop)
 		{
-			try {
+			try 
+			{
+				DatagramPacket msg = new DatagramPacket (new byte[512], 512);
+				ms.receive(msg);
+				
+				byte[] data = msg.getData();
+
+				int i = 0;
+				for (;i < data.length && data[i] != 0; i++);
+					
+				byte[] newData = new byte[i];
+				
+				for (int j = 0 ; j < newData.length ; j++)
+					newData[j] = data[j];
+				
+				msg.setData(newData);
+				
 				String line = ""; // TODO reader.readLine();
 				msgHandler.onMessage(line);
 			}
