@@ -5,3 +5,6 @@ src/serveur/job/GerantDeClient.java
 src/serveur/job/Command.java
 src/serveur/job/AcceptClient.java
 src/serveur/job/Client.java
+src/commun/form/Circle.java
+src/commun/form/Form.java
+src/commun/form/Square.java

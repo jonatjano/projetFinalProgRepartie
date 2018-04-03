@@ -5,3 +5,6 @@ src/client/job/MessageHandler.java
 src/client/job/MessageWriter.java
 src/client/job/MessageReceiver.java
 src/client/Client.java
+src/commun/form/Circle.java
+src/commun/form/Form.java
+src/commun/form/Square.java
