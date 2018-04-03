@@ -2,3 +2,14 @@ src/serveur/ihm/IHM.java
 src/serveur/ihm/IHMConsol.java
 src/serveur/Server.java
 src/serveur/job/AcceptClient.java
+src/client/ihm/IHMServer.java
+src/client/ihm/Canvas.java
+src/client/ihm/IHM.java
+src/client/ihm/IHMSwing.java
+src/client/job/MessageHandler.java
+src/client/job/form/Circle.java
+src/client/job/form/Form.java
+src/client/job/form/Square.java
+src/client/job/MessageWriter.java
+src/client/job/MessageReceiver.java
+src/client/Client.java

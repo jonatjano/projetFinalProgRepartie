@@ -8,17 +8,23 @@ import java.awt.image.BufferedImage;
 import java.awt.Image;
 import javax.swing.event.MouseInputListener;
 import java.awt.event.MouseEvent;
+import client.job.MessageHandler;
+import client.Client;
+import client.job.MessageWriter;
 
 class Canvas extends JPanel implements MouseInputListener
 {
-	BufferedImage image;
+	private IHM ihm;
+	private BufferedImage image;
 
-	Canvas()
+	Canvas(IHM ihm)
 	{
 		super();
 
+		this.ihm = ihm;
+		addMouseMotionListener(this);
 		setBackground(Color.white);
-		image = new BufferedImage(2000, 2000, BufferedImage.TYPE_INT_ARGB);
+		image = new BufferedImage(1500, 1500, BufferedImage.TYPE_INT_ARGB);
 		draw();
 	}
 
@@ -33,36 +39,40 @@ class Canvas extends JPanel implements MouseInputListener
 
 		Graphics2D g2d = (Graphics2D) g;
 
-		g2d.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_DEFAULT), null, null);
+		g2d.drawImage(image.getScaledInstance(getWidth(), getHeight(), Image.SCALE_SMOOTH), null, null);
 
 	}
 
 	void draw(String... params)
 	{
-		for (String param : params)
-		{
-			System.out.print(param + " , ");
-		}
-		System.out.println();
+		// System.out.print("reception de : ");
+		// for (String param : params)
+		// {
+		// 	System.out.print(param + " , ");
+		// }
+		// System.out.println();
 
 		Graphics2D g2 = image.createGraphics();
 
-		g2.setColor(Color.blue);
-		g2.fillRect(500, 0, 1000, 1000);
+		g2.setColor(Color.black);
+		g2.fillOval(600, 300, 200, 400);
 
 		g2.setColor(Color.white);
-		g2.fillOval(600, 300, 200, 400);
+		g2.fillRect(700, 500, 1, 1);
 
 		repaint();
 	}
 
 	public void mouseClicked(MouseEvent e)
 	{
-		// client.getMessageWriter().sendMessage(MessageHandler.DRAW_MESSAGE + ":" +  sendField.getText());
+		ihm.getClient().getMessageWriter().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
+		System.out.println("envoi de : " + MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
 	}
+
 	public void mouseDragged(MouseEvent e)
 	{
-		// client.getMessageWriter().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
+		ihm.getClient().getMessageWriter().sendMessage(MessageHandler.DRAW_MESSAGE + ":SQUARE::1,10,100,1000,1000");
+		System.out.println("envoi de : " + MessageHandler.DRAW_MESSAGE + ":SQUARE:1,10,100,1000,1000");
 	}
 
 	public void mouseExited(MouseEvent e) {}

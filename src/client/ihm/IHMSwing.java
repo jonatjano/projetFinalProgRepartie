@@ -61,7 +61,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 		chatPanel.add(botPanel, BorderLayout.SOUTH);
 		frame.add(chatPanel, BorderLayout.EAST);
 
-		canvas = new Canvas();
+		canvas = new Canvas(this);
 		frame.add(canvas);
 
 
@@ -77,6 +77,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 		});
 
 		frame.setSize(800, 600);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
 	}
 
@@ -141,10 +142,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 			String message = sendField.getText().replaceAll("[ \t\n]", "");
 			if (!message.equals(""))
 			{
-				if (sendField.getText().startsWith("/"))
-					client.getMessageWriter().sendMessage(MessageHandler.COMMAND_MESSAGE + ":" + sendField.getText());
-				else
-					client.getMessageWriter().sendMessage(MessageHandler.NORMAL_MESSAGE + ":" +  sendField.getText());
+				client.getMessageWriter().sendMessage(MessageHandler.NORMAL_MESSAGE + ":" +  sendField.getText());
 				sendField.setText("");
 			}
 		}

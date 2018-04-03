@@ -23,6 +23,11 @@ public abstract class IHM
 		printMessage(message, "");
 	}
 
+	public Client getClient()
+	{
+		return client;
+	}
+
 	public abstract void printMessage(String message, Color color);
 
 	public abstract void printMessage(String message, String style);
