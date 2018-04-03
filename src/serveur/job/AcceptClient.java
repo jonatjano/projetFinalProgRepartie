@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import server.Server;
 import server.ihm.IHM;
+import server.job.form.Form;
 import server.job.Command;
 import java.util.List;
 import java.util.ArrayList;
