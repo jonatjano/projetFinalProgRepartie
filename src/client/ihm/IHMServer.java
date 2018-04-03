@@ -1,9 +1,15 @@
 package client.ihm;
 
 import java.awt.Color;
+import client.Client;
 
 public abstract class IHMServer extends IHM
 {
+	public IHMServer(Client client)
+	{
+		super(client);
+	}
+
 	public void printMessage(String message, Color color) {}
 
 	public void printMessage(String message, String style) {}
