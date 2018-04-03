@@ -11,15 +11,21 @@ import java.nio.charset.StandardCharsets;
  */
 public class MessageReceiver implements Runnable
 {
-	private BufferedReader reader;
 	private MessageHandler msgHandler;
+	private MulticastSocket ms;
 	private boolean stop;
 
-	public MessageReceiver(InputStream socketInputStream, MessageHandler msgHandler)
+	public Network(String IP, int port, MessageHandler msgHandler)
 	{
-		reader = new BufferedReader(new InputStreamReader(socketInputStream, StandardCharsets.UTF_8));
 		stop = false;
+		
+		this.ms = new MulticastSocket( InetAddress.getByName (IP) );
 		this.msgHandler = msgHandler;
+	}
+	
+	public void sendMessage(String message)
+	{
+		writer.println(message);
 	}
 
 	public void run()

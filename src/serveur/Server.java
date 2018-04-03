@@ -30,6 +30,7 @@ public class Server
 	
 	private Client client;
 
+	private DatagramSocket ds;
 	private String mCastIP;	
 	private int mCastPort;
 	
@@ -72,8 +73,9 @@ public class Server
 		{
 			this.mCastIP = Server.DEFAULT_MULT_CAST_IP;
 			this.mCastPort = Server.DEFAULT_MULT_CAST_PORT;
+			this.ds = new DatagramSocket (port);
 			
-			this.accCli = new AcceptClient(this, this.port);
+			this.accCli = new AcceptClient(this, this.ds);
 			this.thAccCli = new Thread(this.accCli);
 			this.thAccCli.start();
 

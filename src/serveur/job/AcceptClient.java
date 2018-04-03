@@ -33,9 +33,9 @@ public class AcceptClient implements Runnable
 				
 				ds.receive(msg);
 				
-				String message = new String( s.getMultiCast() ,"UTF-8");
+				String message = serv.getMultiCast();
 				
-				DatagramPacket reponse = new DatagramPacket (message, message.length(), msg.getAddress(), msg.getPort());
+				DatagramPacket reponse = new DatagramPacket (message.getBytes("UTF-8"), message.length(), msg.getAddress(), msg.getPort());
 				
 				ds.send(reponse);
 				
