@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.net.MulticastSocket;
 import java.net.InetAddress;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 
 /**
  * @author Jonathan Selle, Adam Bernouy
@@ -26,12 +27,27 @@ public class Network implements Runnable
 		try
 		{
 			this.stop = false;
-			this.port = port;
-			this.ms = new MulticastSocket(port);
-			this.mcast = InetAddress.getByName (ip);
 			
+			DatagramSocket ds = new DatagramSocket ();
+			
+			String message = "Salut";
+			DatagramPacket dp = new DatagramPacket (message.getBytes("UTF-8"), message.getBytes("UTF-8").length, InetAddress.getByName (ip), port);
+			
+			ds.send(dp);
+			
+			DatagramPacket msg = new DatagramPacket ( new byte[512], 512 );
+			ds.receive(msg);
+			
+			String[] info = new String(msg.getData(),"UTF-8").split(":");
+			
+			this.mcast = InetAddress.getByName (info[0]);
+			this.port = Integer.parseInt(info[1]);
+			this.ms = new MulticastSocket(this.port);
 			ms.joinGroup ( mcast );
+			
 			this.msgHandler = msgHandler;	
+			
+			ds.close();
 		} catch (Exception e) {}
 	}
 
