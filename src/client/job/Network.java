@@ -38,6 +38,22 @@ public class Network implements Runnable
 			DatagramPacket msg = new DatagramPacket ( new byte[512], 512 );
 			ds.receive(msg);
 			
+			
+			byte[] data = msg.getData();
+
+			int i = 0;
+			for (;i < data.length && data[i] != 0; i++);
+				
+			byte[] newData = new byte[i];
+			
+			for (int j = 0 ; j < newData.length ; j++)
+				newData[j] = data[j];
+			
+			
+			msg.setData(newData);
+			
+			
+			
 			String[] info = new String(msg.getData(),"UTF-8").split(":");
 			
 			this.mcast = InetAddress.getByName (info[0]);
@@ -48,7 +64,10 @@ public class Network implements Runnable
 			this.msgHandler = msgHandler;	
 			
 			ds.close();
-		} catch (Exception e) {}
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void sendMessage(String message)
@@ -56,7 +75,10 @@ public class Network implements Runnable
 		try
 		{
 			DatagramPacket dp = new DatagramPacket (message.getBytes("UTF-8"), message.getBytes("UTF-8").length, this.mcast, this.port);	
-		} catch (Exception e) {}
+			ms.send(dp);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void run()
@@ -80,7 +102,7 @@ public class Network implements Runnable
 				
 				msg.setData(newData);
 				
-				String line = ""; // TODO reader.readLine();
+				String line = new String( msg.getData(), "UTF-8");
 				msgHandler.onMessage(line);
 			}
 			catch (Exception e) {

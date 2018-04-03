@@ -45,13 +45,13 @@ public class Server
 
 	private String getIp() throws Exception
 	{
-		URL whatismyip = new URL("http://checkip.amazonaws.com");
+		/*URL whatismyip = new URL("http://checkip.amazonaws.com");
 		BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
 
 		String ip = in.readLine();
 		if (ip.matches("([0-9]{1,3}.){3}[0-9]{0,3}"))
 			return ip;
-
+*/
 		return Inet4Address.getLocalHost().getHostAddress();
 	}
 

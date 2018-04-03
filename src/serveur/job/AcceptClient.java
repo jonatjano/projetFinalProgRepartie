@@ -32,14 +32,13 @@ public class AcceptClient implements Runnable
 				DatagramPacket msg = new DatagramPacket (new byte[512], 512);
 				
 				ds.receive(msg);
-				
 				String message = serv.getMultiCast();
 				
 				DatagramPacket reponse = new DatagramPacket (message.getBytes("UTF-8"), message.getBytes("UTF-8").length, msg.getAddress(), msg.getPort());
 				
+				Thread.sleep(AcceptClient.WAITING_TIME_CONNECTION);
 				ds.send(reponse);
 				
-				Thread.sleep(AcceptClient.WAITING_TIME_CONNECTION);
 			}
 			catch(Exception e)
 			{
