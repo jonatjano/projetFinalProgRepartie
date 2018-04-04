@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.HashMap;
 
+import client.Client;
+
 import server.job.AcceptClient;
 import server.ihm.IHM;
 import server.ihm.IHMConsol;
