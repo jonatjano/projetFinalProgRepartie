@@ -29,13 +29,13 @@ public abstract class IHM
 	{
 		return client;
 	}
-	
+
 	public void reSend ()
 	{
 		List<Shape> shapes = new ArrayList(this.shapes);
 		String message = MessageHandler.DRAW_MESSAGE + ":CLEAR";
 		client.getNetwork().sendMessage(message);
-		
+
 		for (Shape shape : shapes)
 		{
 			message = MessageHandler.DRAW_MESSAGE + ":" + "DRAW" + ":" + shape.getType() + ":" + Canvas.colorToString(shape.getColor()) + ":" +  shape.getFilling();
@@ -66,7 +66,7 @@ public abstract class IHM
 					for (int i = 0; i < this.shapes.size(); i++)
 					{
 						int id = this.shapes.size() - 1 - i;
-						if (this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ))
+						if (this.shapes.get(id) != null && this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ))
 						{
                             this.shapes.remove(id);
 							break;
@@ -81,7 +81,7 @@ public abstract class IHM
 		}
 		catch (Exception e) {e.printStackTrace();}
 	}
-	
+
 	public List<Shape> getShapes()
 	{
 		return this.shapes;
