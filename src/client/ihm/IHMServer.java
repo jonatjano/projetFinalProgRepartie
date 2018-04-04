@@ -20,4 +20,9 @@ public class IHMServer extends IHM
 	{
 		return "SERVER";
 	}
+
+	public String getDrawDelState()
+	{
+		return "DRAW";
+	}
 }
