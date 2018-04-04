@@ -116,6 +116,12 @@ public class Server
 			//System.out.println("La lecture du fichier de configuration à échoué");
 		}
 	}
+	
+	public void reSend()
+	{
+		if (client != null)
+			client.reSend();
+	}
 
 	public Client getClient ()
     {

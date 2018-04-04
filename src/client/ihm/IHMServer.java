@@ -12,9 +12,16 @@ public class IHMServer extends IHM
 
 	public void printMessage(String message, Color color) {}
 
-	public void printMessage(String message, String style) {}
+	public void printMessage(String message, String style)
+	{
+		if (message.startsWith("Connexion"))
+			reSend();
+	}
 
-	public void draw(String type, String... params) {}
+	public void draw(String type, String... params)
+	{
+		super.draw(type, params);
+	}
 
 	public String askPseudo()
 	{

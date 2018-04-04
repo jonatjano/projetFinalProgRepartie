@@ -36,6 +36,8 @@ import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import client.Client;
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * IHM Swing du client.
@@ -302,6 +304,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
      */
 	public void draw (String type, String... params)
 	{
+		super.draw(type, params);
 		canvas.draw(type, params);
 	}
 

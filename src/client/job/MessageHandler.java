@@ -25,7 +25,7 @@ public class MessageHandler
 
 	void onMessage (String message)
 	{
-		//System.out.println("Réception : " + message);
+		System.out.println("Réception : " + message);
 		String messageType = message.substring(0, message.indexOf(":"));
 		String messageBody = message.substring(message.indexOf(":") + 1);
 
