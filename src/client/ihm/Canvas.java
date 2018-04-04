@@ -185,10 +185,10 @@ param :
 						if (this.shapes.get(i).isAt( Integer.parseInt(params[0]), Integer.parseInt(params[1]) ))
 						{
                             this.shapes.remove(i);
+							this.repaint();
+							break;
 						}
 					}
-
-					this.repaint();
 				    break;
 
 				case "CLEAR":
@@ -213,7 +213,7 @@ param :
         switch (shape.getType())
         {
             case Shape.SQUARE:
-                g.fillRect(shapeParams[0], shapeParams[1], shapeParams[2], shapeParams[2]);
+                g.fillRect(shapeParams[0] - shapeParams[2] / 2, shapeParams[1] - shapeParams[2] / 2, shapeParams[2], shapeParams[2]);
                 break;
             case Shape.CIRCLE:
                 g.fillOval(shapeParams[0] - shapeParams[2], shapeParams[1] - shapeParams[2], 2 * shapeParams[2], 2 * shapeParams[2]);
@@ -235,7 +235,7 @@ param :
                                                             "" + this.thickness });
         /*this.drawShape( (Graphics2D) this.image.getGraphics(), newShape );*/
 
-        String message = MessageHandler.DRAW_MESSAGE + ":DRAW:" + this.shapeToDraw + ":" + colorStr + ":" +  this.filling + ":" + e.getX() + ":" + e.getY() + ":" + this.thickness;
+        String message = MessageHandler.DRAW_MESSAGE + ":" + this.ihm.getDrawDelState() + ":" + this.shapeToDraw + ":" + colorStr + ":" +  this.filling + ":" + e.getX() + ":" + e.getY() + ":" + this.thickness;
         this.ihm.getClient().getNetwork().sendMessage(message);
     }
 
