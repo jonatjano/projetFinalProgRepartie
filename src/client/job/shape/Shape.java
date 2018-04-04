@@ -12,7 +12,6 @@ public abstract class Shape
 {
     public static final String CIRCLE   = "CIRCLE";
     public static final String SQUARE   = "SQUARE";
-    public static final String RUBBER   = "RUBBER";
 
 	private Color   color;
 	private int     filling;

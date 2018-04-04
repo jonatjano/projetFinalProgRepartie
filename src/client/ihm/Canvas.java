@@ -63,6 +63,7 @@ class Canvas extends JPanel implements MouseInputListener
 	@Override
 	protected void paintComponent (Graphics g)
 	{
+		super.paintComponent(g);
         // Dessine toutes les formes jamais enregistrées sur le canvas
         for (Shape shape : this.shapes)
         {
