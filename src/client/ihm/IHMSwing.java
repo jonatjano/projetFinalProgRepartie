@@ -63,6 +63,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 	private JTextField  sendField;
 	private JButton     sendButton;
 	private JButton     drawDelBut;
+	private JButton     fillEmptyBut;
 	/** Panel de dessin. */
 	private JPanel      drawPanel;
 	/** Canvas de dessin de l'application */
@@ -165,6 +166,21 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 		this.drawPanel.add(leftPlaceholderPanel, BorderLayout.WEST);
 
         /* Choix de l'épaisseur */
+        leftPanel.add( new JLabel("SIZE") );
+        JTextField sizeTF = new IntegerJTextField( "" + this.canvas.getShapeSize() );
+        sizeTF.addKeyListener( new KeyAdapter() {
+            /**
+             * Modifie l'épaisseur du trait du canvas à chaque modification
+             * @param e
+             */
+            public void keyReleased (KeyEvent e)
+            {
+                canvas.setShapeSize( Integer.parseInt(sizeTF.getText()) );
+            }
+        });
+
+        leftPanel.add( sizeTF );
+
         leftPanel.add( new JLabel("EPAISSEUR") );
         JTextField thicknessTF = new IntegerJTextField( "" + this.canvas.getThickness() );
         thicknessTF.addKeyListener( new KeyAdapter() {
@@ -179,6 +195,21 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
         });
 
         leftPanel.add( thicknessTF );
+
+		String[] fillEmptyText = new String[] {"Fill", "Empty"};
+		Color[] fillEmptycolors = new Color[] {drawColor, delColor};
+        fillEmptyBut = new JButton(fillEmptyText[0]);
+        fillEmptyBut.setBackground( fillEmptycolors[0] );
+        fillEmptyBut.addActionListener( new ActionListener() {
+            public void actionPerformed (ActionEvent e)
+            {
+				int fillEmptyPos = 1 - Arrays.asList(fillEmptyText).indexOf(fillEmptyBut.getText());
+                fillEmptyBut.setText(fillEmptyText[fillEmptyPos]);
+                fillEmptyBut.setBackground(fillEmptycolors[fillEmptyPos]);
+				canvas.setFilling(fillEmptyText[fillEmptyPos]);
+            }
+        });
+        leftPanel.add(fillEmptyBut);
 
         /* Choix de la couleur */
         leftPanel.add( new JLabel("COULEUR") );
@@ -206,6 +237,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 				int drawDelPos = 1 - Arrays.asList(drawDelText).indexOf(drawDelBut.getText());
                 drawDelBut.setText(drawDelText[drawDelPos]);
                 drawDelBut.setBackground(drawDelcolors[drawDelPos]);
+				canvas.setDrawDel(drawDelText[drawDelPos]);
             }
         });
         leftPanel.add(drawDelBut);
@@ -314,11 +346,6 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 		recepField.replaceSelection("\n" + msg);
 		recepField.setCaretPosition(recepField.getDocument().getLength());
 		recepField.setEditable(false);
-	}
-
-	public String getDrawDelState()
-	{
-		return drawDelBut.getText();
 	}
 
     /**

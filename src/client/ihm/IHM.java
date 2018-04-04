@@ -87,8 +87,6 @@ public abstract class IHM
 		return this.shapes;
 	}
 
-	public abstract String getDrawDelState ();
-
 	public void draw (String... params)
 	{
 		String[] finalParams = new String[params.length - 1];
