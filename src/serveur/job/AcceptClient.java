@@ -17,12 +17,15 @@ public class AcceptClient implements Runnable
 	private Server serv;
 	DatagramSocket ds;
 	
-	public AcceptClient(Server s, DatagramSocket ds)
+	public AcceptClient (Server s, DatagramSocket ds)
 	{
-		this.serv = s;
-		this.ds = ds;
+		this.serv 	= s;
+		this.ds 	= ds;
 	}
-	
+
+	/**
+	 * Accepte les clients qui tentent de se connecter.
+	 */
 	public void run()
 	{
 		while (true)
@@ -34,11 +37,10 @@ public class AcceptClient implements Runnable
 				ds.receive(msg);
 				String message = serv.getMultiCast();
 				
-				DatagramPacket reponse = new DatagramPacket (message.getBytes("UTF-8"), message.getBytes("UTF-8").length, msg.getAddress(), msg.getPort());
+				DatagramPacket response = new DatagramPacket(message.getBytes("UTF-8"), message.getBytes("UTF-8").length, msg.getAddress(), msg.getPort());
 				
 				Thread.sleep(AcceptClient.WAITING_TIME_CONNECTION);
-				ds.send(reponse);
-				
+				ds.send(response);
 			}
 			catch(Exception e)
 			{

@@ -10,26 +10,29 @@ import java.net.InetAddress;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+
 /**
- * @author Jonathan Selle, Adam Bernouy
- * @version 2017-12-23
+ * Gère l'envoi et la réception des messages des autres clients.
+ * @author	Adam Bernouy, Florent Dewilde, Jonathan Selle
+ * @version	2018-04-01
  */
 public class Network implements Runnable
 {
-	private MessageHandler msgHandler;
+	private MessageHandler  msgHandler;
 	private MulticastSocket ms;
-	private InetAddress mcast;
-	private int port;
-	private boolean stop;
+	private InetAddress     mcast;
+	/** Port sur lequel le se trouve le serveur. */
+	private int             port;
+	private boolean         stop;
 
-	public Network(String ip, int port, MessageHandler msgHandler)
+
+	public Network (String ip, int port, MessageHandler msgHandler)
 	{
 		try
 		{
-			this.stop = false;
-			
+			this.stop       = false;
+
 			DatagramSocket ds = new DatagramSocket ();
-			
 			String message = "Salut";
 			DatagramPacket dp = new DatagramPacket (message.getBytes("UTF-8"), message.getBytes("UTF-8").length, InetAddress.getByName (ip), port);
 			
@@ -64,24 +67,32 @@ public class Network implements Runnable
 			this.msgHandler = msgHandler;	
 			
 			ds.close();
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	public void sendMessage(String message)
+
+    /**
+     * Envoie un message à tous les clients.
+     * @param message
+     */
+	public void sendMessage (String message)
 	{
 		try
 		{
 			DatagramPacket dp = new DatagramPacket (message.getBytes("UTF-8"), message.getBytes("UTF-8").length, this.mcast, this.port);	
 			ms.send(dp);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 		}
 	}
 
-	public void run()
+	public void run ()
 	{
 		while (!stop)
 		{

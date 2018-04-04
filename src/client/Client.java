@@ -13,78 +13,67 @@ import client.ihm.IHMSwing;
 import client.ihm.IHMServer;
 
 /**
- * @author Jonathan Selle, Adam Bernouy
+ * @author Adam Bernouy, Florent Dewilde, Jonathan Selle,
  * @version 2017-12-23
  */
 public class Client
 {
-	/**
-	 * ip de connexion par defaut
-	 */
+	/** IP de connexion par défaut. */
 	private static final String DEFAULT_IP = "127.0.0.1";
-	/**
-	 * port de connexion par defaut
-	 */
+	/** Port de connexion par défaut. */
 	private static final int DEFAULT_PORT = 6000;
 
-	/**
-	 * socket de connexion au server
-	 */
-	Socket socket;
+    /** IHM du programme. */
+    static IHM ihm;
+
+	/** Socket de connexion au serveur. */
+	Socket          socket;
+	/** Objet gérant uniquement l'envoi et la réception de messages. */
+	Network         network;
+	/** Thread recevant les messages des autres clients. */
+	Thread          threadReceiver;
+	/** Objet traitant les messages reçus. */
+	MessageHandler  msgHandler;
+    /** Pseudo du client. */
+    String          pseudo;
+    /** Identifiant du client. */
+    String          id;
+
 
 	/**
-	 * objet gérant l'envoi et la reception de message venant du serveur (ne les traite pas)
-	 * @see Network
+	 * Creer un client en initialisant une Socket de mêmes parametres puis les objets de gestion des messages et l'IHM.
+	 * @param  ip           L'ip de la Socket à initialiser.
+	 * @param  port         Le port de la Socket à initialiser.
 	 */
-	Network network;
-	/**
-	 * Thread de msgIn
-	 * @see msgReceiver
-	 */
-	Thread threadReceiver;
-	/**
-	 * objet traitant les messages venant du serveur
-	 */
-	MessageHandler msgHandler;
-
-	/**
-	 * IHM du programme
-	 */
-	static IHM ihm;
-
-	/**
-	 * Creer un client en initialisant une Socket de mêmes parametres puis les objets de gestion des messages et l'IHM
-	 * @param  ip           l'ip de la Socket à initialiser
-	 * @param  port         le port de la Socket à initialiser
-	 */
-	public Client(String ip, int port)
+	public Client (String ip, int port)
 	{
 		this(ip, port, false);
 	}
 
 	/**
-	 * Creer un client en initialisant une Socket de mêmes parametres puis les objets de gestion des messages et l'IHM
-	 * @param  ip           l'ip de la Socket à initialiser
-	 * @param  port         le port de la Socket à initialiser
-	 * @param
+	 * Creer un client en initialisant une Socket de mêmes parametres puis les objets de gestion des messages et l'IHM.
+	 * @param ip            L'ip de la Socket à initialiser.
+	 * @param port          Le port de la Socket à initialiser.
+	 * @param hasIHM        Vrai si le client à une IHM, sinon faux.
 	 */
-	public Client(String ip, int port, boolean hasIHM)
+	public Client (String ip, int port, boolean hasIHM)
 	{
-		if (hasIHM)
-		{
-			ihm = new IHMSwing(this);
-		}
-		else
-		{
-			ihm = new IHMServer(this);
-		}
+		this.msgHandler = new MessageHandler(this);
+		this.network = new Network(ip, port, msgHandler);
+		this.threadReceiver = new Thread(network);
+		this.threadReceiver.start();
 
-		msgHandler = new MessageHandler(this);
+		this.pseudo = "";
 
-		network = new Network(ip, port, msgHandler);
-
-		threadReceiver = new Thread(network);
-		threadReceiver.start();
+		// Création de l'interface
+        if (hasIHM)
+        {
+            ihm = new IHMSwing(this);
+        }
+        else
+        {
+            ihm = new IHMServer(this);
+        }
 	}
 
 	public Network getNetwork()
@@ -92,15 +81,57 @@ public class Client
 		return network;
 	}
 	
-	public void reSend()
+	public void reSend ()
 	{
 		//TODO envoie toutes les formes a tout le monde.
 	}
 
-	public IHM getIhm()
+
+    /*-------------*/
+    /*   SETTERS   */
+    /*-------------*/
+
+    /**
+     * Modifie le pseudo du client.
+     * @param pseudo Le nouveau pseudo du client.
+     */
+    public void setPseudo (String pseudo)
+    {
+        this.pseudo = pseudo;
+    }
+
+    /**
+     * Modifie l'identifiant du client.
+     * @param id Nouvel identifiant du client.
+     */
+    public void setId (String id)
+    {
+        this.id = id;
+    }
+
+
+    /*-------------*/
+    /*   GETTERS   */
+	/*-------------*/
+
+    /**
+     * Retourne le pseudo du client.
+     * @return Le pseudo du client.
+     */
+    public String getPseudo ()
+    {
+        return this.pseudo;
+    }
+
+    /**
+     * Retourne l'interface utilisateur du programme.
+     * @return L'interface utilisateur.
+     */
+	public IHM getIhm ()
 	{
 		return ihm;
 	}
+
 
 	/**
 	 * méthode d'entrée dans le programme
@@ -117,7 +148,7 @@ public class Client
 	 * @see DEFAULT_IP
 	 * @see DEFAULT_PORT
 	 */
-	public static void main(String[] args)
+	public static void main (String[] args)
 	{
 		String ip = DEFAULT_IP;
 		int port = DEFAULT_PORT;

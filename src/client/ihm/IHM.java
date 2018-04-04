@@ -8,7 +8,7 @@ public abstract class IHM
 {
 	protected Client client;
 
-	public IHM(Client client)
+	public IHM (Client client)
 	{
 		this.client = client;
 	}
@@ -23,23 +23,23 @@ public abstract class IHM
 	// 	return false;
 	// }
 
-	public void printMessage(String message)
+	public void printMessage (String message)
 	{
 		printMessage(message, "");
 	}
 
-	public Client getClient()
+	public Client getClient ()
 	{
 		return client;
 	}
 
-	public abstract void printMessage(String message, Color color);
+	public abstract void printMessage (String message, Color color);
 
-	public abstract void printMessage(String message, String style);
+	public abstract void printMessage (String message, String style);
 
-	public abstract void draw(String type, String... params);
+	public abstract void draw (String type, String... params);
 
-	public void draw(String... params)
+	public void draw (String... params)
 	{
 		String[] finalParams = new String[params.length - 1];
 

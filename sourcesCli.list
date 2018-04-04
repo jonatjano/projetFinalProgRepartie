@@ -1,10 +1,11 @@
-src/client/ihm/IHMServer.java
+src/client/Client.java
 src/client/ihm/Canvas.java
 src/client/ihm/IHM.java
+src/client/ihm/IHMServer.java
 src/client/ihm/IHMSwing.java
+src/client/ihm/IntegerJTextField.java
 src/client/job/MessageHandler.java
-src/client/job/form/Circle.java
-src/client/job/form/Form.java
-src/client/job/form/Square.java
 src/client/job/Network.java
-src/client/Client.java
+src/client/job/shape/Circle.java
+src/client/job/shape/Shape.java
+src/client/job/shape/Square.java

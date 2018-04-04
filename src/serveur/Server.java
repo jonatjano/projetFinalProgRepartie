@@ -12,8 +12,6 @@ import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.HashMap;
 
-import client.Client;
-
 import server.job.AcceptClient;
 import server.ihm.IHM;
 import server.ihm.IHMConsol;
@@ -21,10 +19,10 @@ import server.ihm.IHMConsol;
 
 public class Server
 {
-	public static final int DEFAULT_PORT = 6000;
+	public static final int 	DEFAULT_PORT 			= 6000;
 
-	public static final String DEFAULT_MULT_CAST_IP = "231.246.46.52";
-	public static final int DEFAULT_MULT_CAST_PORT = 2375;
+	public static final String 	DEFAULT_MULT_CAST_IP 	= "231.246.46.52";
+	public static final int 	DEFAULT_MULT_CAST_PORT 	= 2375;
 
 	private static Map<String, String> config;
 
@@ -38,12 +36,13 @@ public class Server
 	private Thread thAccCli;
 	private IHM ihm;
 
-	public IHM getIHM()
+
+	public IHM getIHM ()
 	{
 		return this.ihm;
 	}
 
-	private String getIp() throws Exception
+	private String getIp () throws Exception
 	{
 		/*URL whatismyip = new URL("http://checkip.amazonaws.com");
 		BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
@@ -60,29 +59,28 @@ public class Server
 		return this.mCastIP + ":" + this.mCastPort;
 	}
 
-	public Server(IHM ihm)
+	public Server (IHM ihm)
 	{
 		this(Server.DEFAULT_PORT, ihm);
 	}
 
 
-	public Server(int port, IHM ihm)
+	public Server (int port, IHM ihm)
 	{
 		try
 		{
-			this.mCastIP = Server.DEFAULT_MULT_CAST_IP;
-			this.mCastPort = Server.DEFAULT_MULT_CAST_PORT;
-			this.ds = new DatagramSocket (port);
+			this.mCastIP 	= Server.DEFAULT_MULT_CAST_IP;
+			this.mCastPort 	= Server.DEFAULT_MULT_CAST_PORT;
+			this.ds 		= new DatagramSocket(port);
 
-			this.accCli = new AcceptClient(this, this.ds);
-			this.thAccCli = new Thread(this.accCli);
+			this.accCli 	= new AcceptClient(this, this.ds);
+			this.thAccCli 	= new Thread(this.accCli);
 			this.thAccCli.start();
 
-			this.ihm = ihm;
+			this.ihm 		= ihm;
 			ihm.pMessage(IHM.SERVER_INFO, this.getIp() + ":" + port);
 
-			this.client = new Client (this.getIp(), port);
-			this.client.reSend();
+			this.client 	= new Client(this.getIp(), port);
 		}
 		catch(Exception e)
 		{
@@ -90,7 +88,7 @@ public class Server
 		}
 	}
 
-	private static void readConfig(String fileName)
+	private static void readConfig (String fileName)
 	{
 		config = new HashMap<String, String>();
 		try
@@ -117,7 +115,13 @@ public class Server
 		}
 	}
 
-	public static void main(String[] arg)
+	public Client getClient ()
+    {
+        return this.client;
+    }
+
+
+	public static void main (String[] arg)
 	{
 		readConfig("../config");
 
@@ -139,9 +143,8 @@ public class Server
 					ihm = new IHMConsol();
 			}
 
-
-
-			try {
+			try
+            {
 				port = Integer.parseInt(config.get("defaultPort"));
 			}
 			catch (Exception e)
@@ -165,5 +168,6 @@ public class Server
 		}
 		Server s  = new Server(port,ihm);
 	}
+
 
 }
