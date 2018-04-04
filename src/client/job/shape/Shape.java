@@ -30,6 +30,11 @@ public abstract class Shape
 
 	public abstract int[] getParams ();
 
+	public int getFilling()
+	{
+		return this.filling;
+	}
+
 	public Color getColor()
 	{
 		return color;
@@ -66,10 +71,10 @@ public abstract class Shape
 			switch (shapeName)
 			{
 				case "SQUARE":
-				    shape = new Square(color, filling, Integer.parseInt(params[3]), Integer.parseInt(params[4]), Integer.parseInt(params[5]));
+				    shape = new Square(color, filling, Integer.parseInt(params[3]), Integer.parseInt(params[4]), Integer.parseInt(params[5]), Integer.parseInt(params[6]));
 				    break;
                 case "CIRCLE":
-				    shape = new Circle(color, filling, Integer.parseInt(params[3]), Integer.parseInt(params[4]), Integer.parseInt(params[5]));
+				    shape = new Circle(color, filling, Integer.parseInt(params[3]), Integer.parseInt(params[4]), Integer.parseInt(params[5]), Integer.parseInt(params[6]));
 			        break;
 			}
 		}

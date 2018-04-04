@@ -118,7 +118,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 
 		/* Panel de changement de formes */
 		JPanel leftPlaceholderPanel = new JPanel();
-		JPanel leftPanel            = new JPanel( new GridLayout(9, 1));
+		JPanel leftPanel            = new JPanel( new GridLayout(12, 1));
         leftPanel.add( new JLabel("FORME") );
 
 		// CARRE
@@ -188,7 +188,8 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
              */
             public void keyReleased (KeyEvent e)
             {
-                canvas.setThickness( Integer.parseInt(thicknessTF.getText()) );
+				try { canvas.setThickness( Integer.parseInt(thicknessTF.getText()) ); }
+				catch (Exception ex) {}
             }
         });
 

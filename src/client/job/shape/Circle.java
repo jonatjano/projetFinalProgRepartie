@@ -4,7 +4,7 @@ import java.awt.Color;
 
 
 /**
- * Cerle à dessiner.
+ * Cercle à dessiner.
  * @author	Adam Bernouy, Florent Dewilde, Jonathan Selle
  * @version	2018-04-01
  */
@@ -13,13 +13,15 @@ public class Circle extends Shape
 	private int x;
 	private int y;
 	private int radius;
+	private int thickness;
 
-	public Circle (Color color, int filling, int x, int y, int radius)
+	public Circle (Color color, int filling, int x, int y, int radius, int thickness)
 	{
 		super(color, filling);
 		this.x 		= x;
 		this.y 		= y;
 		this.radius = radius;
+		this.thickness = thickness;
 	}
 
 	public String toTram ()
@@ -40,6 +42,6 @@ public class Circle extends Shape
 
 	public int[] getParams ()
 	{
-		return new int[] {x, y, radius};
+		return new int[] {this.x, this.y, this.radius, this.thickness};
 	}
 }

@@ -17,6 +17,7 @@ import javax.swing.event.MouseInputListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.BasicStroke;
 
 
 /**
@@ -46,7 +47,9 @@ class Canvas extends JPanel implements MouseInputListener
 		this.ihm            = ihm;
 
         this.shapeToDraw    = Shape.SQUARE;
-        this.thickness      = 10;
+		this.drawDel        = "DRAW";
+		this.size           = 10;
+        this.thickness      = 5;
         this.color          = Color.black;
         this.filling        = 2;
 
@@ -71,10 +74,14 @@ class Canvas extends JPanel implements MouseInputListener
 
         g2.setColor(Color.white);
         g2.fillRect(0, 0, this.getWidth(), this.getHeight());
-        for (Shape shape : this.shapes)
+        for (int i = 0; i < this.shapes.size(); i++)
         {
-            g2.setColor( shape.getColor() );
-            this.drawShape(g2, shape);
+			Shape shape = this.shapes.get(i);
+			if (shape != null)
+			{
+				g2.setColor( shape.getColor() );
+				this.drawShape(g2, shape);
+			}
         }
         g2.setColor( this.color );
 	}
@@ -230,7 +237,7 @@ param :
 					for (int i = 0; i < this.shapes.size(); i++)
 					{
 						int id = this.shapes.size() - 1 - i;
-						if (this.shapes.get(id).isAt( Integer.parseInt(params[3]), Integer.parseInt(params[4]) ))
+						if (this.shapes.get(id) != null && this.shapes.get(id).isAt( Integer.parseInt(params[3]), Integer.parseInt(params[4]) ))
 						{
                             this.shapes.remove(id);
 							this.repaint();
@@ -261,7 +268,15 @@ param :
         switch (shape.getType())
         {
             case Shape.SQUARE:
-                g2.fillRect(shapeParams[0] - shapeParams[2] / 2, shapeParams[1] - shapeParams[2] / 2, shapeParams[2], shapeParams[2]);
+				if (shape.getFilling() == 1)
+				{
+					g2.setStroke(new BasicStroke(shapeParams[3]));
+					g2.drawRect(shapeParams[0] - shapeParams[2] / 2, shapeParams[1] - shapeParams[2] / 2, shapeParams[2], shapeParams[2]);
+				}
+				else if (shape.getFilling() == 2)
+				{
+					g2.fillRect(shapeParams[0] - shapeParams[2] / 2, shapeParams[1] - shapeParams[2] / 2, shapeParams[2], shapeParams[2]);
+				}
                 break;
             case Shape.CIRCLE:
                 g2.fillOval(shapeParams[0] - shapeParams[2], shapeParams[1] - shapeParams[2], 2 * shapeParams[2], 2 * shapeParams[2]);
@@ -275,15 +290,13 @@ param :
     private void sendDrawMessage (MouseEvent e)
     {
         String  colorStr    = this.colorToString(this.color);
-        Shape   newShape    = Shape.fromTram(new String[] { this.shapeToDraw,
-                                                            colorStr,
-                                                            "" + this.filling,
-                                                            "" + e.getX(),
-                                                            "" + e.getY(),
-                                                            "" + this.thickness });
         /*this.drawShape( (Graphics2D) this.image.getGraphics(), newShape );*/
 
-        String message = MessageHandler.DRAW_MESSAGE + ":" + this.drawDel + ":" + this.shapeToDraw + ":" + colorStr + ":" +  this.filling + ":" + e.getX() + ":" + e.getY() + ":" + this.thickness;
+		String message = MessageHandler.DRAW_MESSAGE + ":" +
+				this.drawDel + ":" + this.shapeToDraw + ":" +
+				colorStr + ":" +  this.filling + ":" +
+				e.getX() + ":" + e.getY() + ":" +
+				this.size + ":" + this.thickness;
         this.ihm.getClient().getNetwork().sendMessage(message);
     }
 

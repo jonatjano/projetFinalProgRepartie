@@ -12,14 +12,16 @@ public class Square extends Shape
 {
 	private int x;
 	private int y;
+	private int size;
 	private int thickness;
 
-	public Square (Color color, int filling, int x, int y, int thickness)
+	public Square (Color color, int filling, int x, int y, int size, int thickness)
 	{
 		super(color, filling);
 		this.x 			= x;
 		this.y 			= y;
-		this.thickness 	= thickness;
+		this.size 	= size;
+		this.thickness = thickness;
 	}
 
 	public String toTram ()
@@ -40,6 +42,6 @@ public class Square extends Shape
 
 	public int[] getParams ()
 	{
-		return new int[] { this.x, this.y, this.thickness };
+		return new int[] { this.x, this.y, this.size, this.thickness };
 	}
 }
