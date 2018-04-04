@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Random;
 
 import client.Client;
 
@@ -21,10 +22,10 @@ import server.ihm.IHMConsol;
 
 public class Server
 {
-	public static final int 	DEFAULT_PORT 			= 6000;
+	public static final int 	DEFAULT_PORT;
 
-	public static final String 	DEFAULT_MULT_CAST_IP 	= "231.246.46.52";
-	public static final int 	DEFAULT_MULT_CAST_PORT 	= 2375;
+	public static final String 	DEFAULT_MULT_CAST_IP;
+	public static final int 	DEFAULT_MULT_CAST_PORT;
 
 	private static Map<String, String> config;
 
@@ -39,6 +40,17 @@ public class Server
 	private IHM ihm;
 
 
+	static
+	{
+		DEFAULT_PORT = 6000;
+		
+		Random r = new Random(System.currentTimeMillis());
+		
+		DEFAULT_MULT_CAST_IP = (r.nextInt(14) + 225) + "." + r.nextInt(255) + "." + r.nextInt(255) + "." + r.nextInt(255);
+		DEFAULT_MULT_CAST_PORT = r.nextInt(28000) + 2375;
+		
+	}
+	
 	public IHM getIHM ()
 	{
 		return this.ihm;
