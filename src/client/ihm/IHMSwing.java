@@ -35,7 +35,7 @@ import javax.swing.text.StyleContext;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import client.Client;
-
+import java.util.Arrays;
 
 /**
  * IHM Swing du client.
@@ -48,6 +48,10 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
     private static Color       normalColor      = Color.cyan;
     /** Couleur des éléments sélectionnés sur le panel de dessin. */
     private static Color       selectedColor    = Color.red;
+    /** Couleur du bouton draw. */
+    private static Color       drawColor        = Color.green;
+    /** Couleur ddu bouton delete. */
+    private static Color       delColor         = Color.red;
 
     /** Fenêtre de l'application. */
 	private JFrame      frame;
@@ -56,6 +60,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 	/** Champ de texte à envoyer avec le bouton approprié sur le chat. */
 	private JTextField  sendField;
 	private JButton     sendButton;
+	private JButton     drawDelBut;
 	/** Panel de dessin. */
 	private JPanel      drawPanel;
 	/** Canvas de dessin de l'application */
@@ -112,7 +117,7 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 
 		/* Panel de changement de formes */
 		JPanel leftPlaceholderPanel = new JPanel();
-		JPanel leftPanel            = new JPanel( new GridLayout(8, 1));
+		JPanel leftPanel            = new JPanel( new GridLayout(9, 1));
         leftPanel.add( new JLabel("FORME") );
 
 		// CARRE
@@ -189,6 +194,19 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
             }
         });
         leftPanel.add(colorB);
+		String[] drawDelText = new String[] {"DRAW", "DEL"};
+		Color[] drawDelcolors = new Color[] {drawColor, delColor};
+        drawDelBut = new JButton(drawDelText[0]);
+        drawDelBut.setBackground( drawDelcolors[0] );
+        drawDelBut.addActionListener( new ActionListener() {
+            public void actionPerformed (ActionEvent e)
+            {
+				int drawDelPos = 1 - Arrays.asList(drawDelText).indexOf(drawDelBut.getText());
+                drawDelBut.setText(drawDelText[drawDelPos]);
+                drawDelBut.setBackground(drawDelcolors[drawDelPos]);
+            }
+        });
+        leftPanel.add(drawDelBut);
 
         /* Fonctions de suppression */
         // Gomme
@@ -293,6 +311,11 @@ public class IHMSwing extends IHM implements KeyListener, ActionListener
 		recepField.replaceSelection("\n" + msg);
 		recepField.setCaretPosition(recepField.getDocument().getLength());
 		recepField.setEditable(false);
+	}
+
+	public String getDrawDelState()
+	{
+		return drawDelBut.getText();
 	}
 
     /**
