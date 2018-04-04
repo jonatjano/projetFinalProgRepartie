@@ -182,14 +182,10 @@ param :
 				    break;
 
 				case "DEL":
-					System.out.println(this.shapes.size());
-					// for (int i = 0 ; i < sdf; i++)
 					for (int i = 0; i < this.shapes.size(); i++)
 					{
-						System.out.println(i);
 						int id = this.shapes.size() - 1 - i;
-						System.out.println(this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ));
-						if (this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ))
+						if (this.shapes.get(id).isAt( Integer.parseInt(params[3]), Integer.parseInt(params[4]) ))
 						{
                             this.shapes.remove(id);
 							this.repaint();

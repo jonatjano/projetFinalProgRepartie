@@ -29,7 +29,8 @@ public class Circle extends Shape
 
 	public boolean isAt (int posX, int posY)
 	{
-		return false;
+		//  (x - a)² + (y - b)² = R²
+		return Math.pow(this.radius, 2) >= Math.pow(this.x - posX, 2) + Math.pow(this.y - posY, 2);
 	}
 
 	public String getType ()

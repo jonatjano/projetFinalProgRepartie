@@ -29,7 +29,8 @@ public class Square extends Shape
 
 	public boolean isAt (int posX, int posY)
 	{
-		return false;
+		return posX >= this.x - this.thickness / 2 && posX <= this.x + this.thickness / 2 &&
+		       posY >= this.y - this.thickness / 2 && posY <= this.y + this.thickness / 2;
 	}
 
 	public String getType ()
