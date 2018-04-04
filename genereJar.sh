@@ -1,4 +1,4 @@
-compile.bat
+sh compile.sh
 cd bin
 jar cvmf ./../tempClient/MANIFEST.MF ./../Client_Bernouy_Dewilde_Selle.jar client
 cd ..
