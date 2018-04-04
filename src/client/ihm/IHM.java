@@ -39,8 +39,6 @@ public abstract class IHM
 
 	public abstract void draw (String type, String... params);
 
-	public abstract String getDrawDelState ();
-
 	public void draw (String... params)
 	{
 		String[] finalParams = new String[params.length - 1];

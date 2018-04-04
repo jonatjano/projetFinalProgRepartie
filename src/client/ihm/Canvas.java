@@ -28,6 +28,8 @@ class Canvas extends JPanel implements MouseInputListener
 {
     /** Type de forme à dessiner. */
     private String          shapeToDraw;
+    private String          drawDel;
+    private int             size;
     private int             thickness;
     private Color           color;
     private int             filling;
@@ -65,14 +67,16 @@ class Canvas extends JPanel implements MouseInputListener
 	{
 		super.paintComponent(g);
         // Dessine toutes les formes jamais enregistrées sur le canvas
-        g.setColor(Color.white);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        Graphics2D g2 = (Graphics2D)g;
+
+        g2.setColor(Color.white);
+        g2.fillRect(0, 0, this.getWidth(), this.getHeight());
         for (Shape shape : this.shapes)
         {
-            g.setColor( shape.getColor() );
-            this.drawShape(g, shape);
+            g2.setColor( shape.getColor() );
+            this.drawShape(g2, shape);
         }
-        g.setColor( this.color );
+        g2.setColor( this.color );
 	}
 
 
@@ -87,6 +91,15 @@ class Canvas extends JPanel implements MouseInputListener
     String getShapeToDraw ()
     {
         return this.shapeToDraw;
+    }
+
+    /**
+     * Renvoie la taille de la forme.
+     * @return La taille de la forme.
+     */
+    int getShapeSize ()
+    {
+        return this.size;
     }
 
     /**
@@ -119,6 +132,37 @@ class Canvas extends JPanel implements MouseInputListener
     void setShapeToDraw (String shapeToDraw)
     {
         this.shapeToDraw = shapeToDraw;
+    }
+
+    /**
+     * Modifie le type d'action.
+     * @param drawDel Le type d'action.
+     */
+    void setDrawDel (String drawDel)
+    {
+		this.drawDel = drawDel;
+    }
+
+    /**
+     * Modifie le type de remplissage.
+     * @param filling Le type de remplissage.
+     */
+    void setFilling (String filling)
+    {
+		switch (filling.toUpperCase())
+		{
+			case "FILL": this.filling = 2; break;
+			case "EMPTY": this.filling = 1; break;
+		}
+    }
+
+    /**
+     * Modifie la taille de la forme.
+     * @param size La taille de la forme.
+     */
+    void setShapeSize (int size)
+    {
+        this.size = size;
     }
 
     /**
@@ -211,16 +255,16 @@ param :
      * Dessine la forme passée en paramètres.
      * @param shape La forme à dessiner.
      */
-	private void drawShape (Graphics g, Shape shape)
+	private void drawShape (Graphics2D g2, Shape shape)
     {
         int[] shapeParams = shape.getParams();
         switch (shape.getType())
         {
             case Shape.SQUARE:
-                g.fillRect(shapeParams[0] - shapeParams[2] / 2, shapeParams[1] - shapeParams[2] / 2, shapeParams[2], shapeParams[2]);
+                g2.fillRect(shapeParams[0] - shapeParams[2] / 2, shapeParams[1] - shapeParams[2] / 2, shapeParams[2], shapeParams[2]);
                 break;
             case Shape.CIRCLE:
-                g.fillOval(shapeParams[0] - shapeParams[2], shapeParams[1] - shapeParams[2], 2 * shapeParams[2], 2 * shapeParams[2]);
+                g2.fillOval(shapeParams[0] - shapeParams[2], shapeParams[1] - shapeParams[2], 2 * shapeParams[2], 2 * shapeParams[2]);
                 break;
         }
     }
@@ -239,7 +283,7 @@ param :
                                                             "" + this.thickness });
         /*this.drawShape( (Graphics2D) this.image.getGraphics(), newShape );*/
 
-        String message = MessageHandler.DRAW_MESSAGE + ":" + this.ihm.getDrawDelState() + ":" + this.shapeToDraw + ":" + colorStr + ":" +  this.filling + ":" + e.getX() + ":" + e.getY() + ":" + this.thickness;
+        String message = MessageHandler.DRAW_MESSAGE + ":" + this.drawDel + ":" + this.shapeToDraw + ":" + colorStr + ":" +  this.filling + ":" + e.getX() + ":" + e.getY() + ":" + this.thickness;
         this.ihm.getClient().getNetwork().sendMessage(message);
     }
 
