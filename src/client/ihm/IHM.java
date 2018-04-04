@@ -66,7 +66,7 @@ public abstract class IHM
 					for (int i = 0; i < this.shapes.size(); i++)
 					{
 						int id = this.shapes.size() - 1 - i;
-						if (this.shapes.get(id) != null && this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ))
+						if (this.shapes.get(id) != null && this.shapes.get(id).isAt( Integer.parseInt(params[3]), Integer.parseInt(params[4]) ))
 						{
                             this.shapes.remove(id);
 							break;
