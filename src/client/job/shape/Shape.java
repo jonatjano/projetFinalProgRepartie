@@ -21,7 +21,7 @@ public abstract class Shape
 		this.color = color;
 		this.filling = filling;
 	}
-
+	
 	public abstract String toTram ();
 
 	public abstract boolean isAt (int posX, int posY);
@@ -33,6 +33,11 @@ public abstract class Shape
 	public Color getColor()
 	{
 		return color;
+	}
+
+	public int getFilling()
+	{
+		return filling;
 	}
 
 	private static Color stringToColor (String colorAsStr)

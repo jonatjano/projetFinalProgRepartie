@@ -32,7 +32,6 @@ class Canvas extends JPanel implements MouseInputListener
     private Color           color;
     private int             filling;
 
-	private List<Shape>     shapes;
 	private IHM             ihm;
 
 
@@ -40,7 +39,6 @@ class Canvas extends JPanel implements MouseInputListener
 	{
 		super();
 
-		this.shapes         = new ArrayList<Shape>();
 		this.ihm            = ihm;
 
         this.shapeToDraw    = Shape.SQUARE;
@@ -67,7 +65,7 @@ class Canvas extends JPanel implements MouseInputListener
         // Dessine toutes les formes jamais enregistrées sur le canvas
         g.setColor(Color.white);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
-        for (Shape shape : this.shapes)
+        for (Shape shape : ihm.getShapes())
         {
             g.setColor( shape.getColor() );
             this.drawShape(g, shape);
@@ -159,7 +157,7 @@ param :
 	COTE | RAYON : entier
  */
 
-    private static String colorToString (Color color)
+    public static String colorToString (Color color)
     {
         return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
     }
@@ -171,44 +169,7 @@ param :
      */
 	void draw (String type, String... params)
 	{
-		try
-		{
-			switch (type)
-			{
-				case "DRAW":
-				    Shape newShape = Shape.fromTram(params);
-					this.shapes.add( newShape );
-                    this.repaint();
-					//System.out.println("Nombre : " + this.shapes.size());
-				    break;
-
-				case "DEL":
-					System.out.println(this.shapes.size());
-					// for (int i = 0 ; i < sdf; i++)
-					for (int i = 0; i < this.shapes.size(); i++)
-					{
-						System.out.println(i);
-						int id = this.shapes.size() - 1 - i;
-						System.out.println(this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ));
-						if (this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ))
-						{
-                            this.shapes.remove(id);
-							this.repaint();
-							break;
-						}
-					}
-				    break;
-
-				case "CLEAR":
-                    this.shapes.clear();
-                    this.repaint();
-				    break;
-			}
-
-			repaint();
-		}
-		catch (Exception e) {e.printStackTrace();}
-
+		this.repaint();
 	}
 
     /**
@@ -232,18 +193,10 @@ param :
     /**
      * Envoie un message de dessin de forme à tous les utilisateurs.
      */
-    private void sendDrawMessage (MouseEvent e)
+    private void sendDrawMessage (int x, int y)
     {
         String  colorStr    = this.colorToString(this.color);
-        Shape   newShape    = Shape.fromTram(new String[] { this.shapeToDraw,
-                                                            colorStr,
-                                                            "" + this.filling,
-                                                            "" + e.getX(),
-                                                            "" + e.getY(),
-                                                            "" + this.thickness });
-        /*this.drawShape( (Graphics2D) this.image.getGraphics(), newShape );*/
-
-        String message = MessageHandler.DRAW_MESSAGE + ":" + this.ihm.getDrawDelState() + ":" + this.shapeToDraw + ":" + colorStr + ":" +  this.filling + ":" + e.getX() + ":" + e.getY() + ":" + this.thickness;
+        String message = MessageHandler.DRAW_MESSAGE + ":" + this.ihm.getDrawDelState() + ":" + this.shapeToDraw + ":" + colorStr + ":" +  this.filling + ":" + x + ":" + y + ":" + this.thickness;
         this.ihm.getClient().getNetwork().sendMessage(message);
     }
 
@@ -253,7 +206,7 @@ param :
      */
 	public void mouseClicked (MouseEvent e)
 	{
-        this.sendDrawMessage(e);
+        this.sendDrawMessage(e.getX(), e.getY());
 	}
 
     /**
@@ -262,7 +215,7 @@ param :
      */
 	public void mouseDragged (MouseEvent e)
 	{
-        this.sendDrawMessage(e);
+        this.sendDrawMessage(e.getX(), e.getY());
     }
 
 	public void mouseExited (MouseEvent e) {}

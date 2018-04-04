@@ -83,7 +83,8 @@ public class Client
 	
 	public void reSend ()
 	{
-		//TODO envoie toutes les formes a tout le monde.
+		System.out.println("reSendOk");
+		ihm.reSend ();
 	}
 
 
