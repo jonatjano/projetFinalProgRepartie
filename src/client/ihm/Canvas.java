@@ -64,6 +64,8 @@ class Canvas extends JPanel implements MouseInputListener
 	protected void paintComponent (Graphics g)
 	{
         // Dessine toutes les formes jamais enregistrées sur le canvas
+        g.setColor(Color.white);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
         for (Shape shape : this.shapes)
         {
             g.setColor( shape.getColor() );
@@ -180,11 +182,16 @@ param :
 				    break;
 
 				case "DEL":
-					for (int i = this.shapes.size() - 1; i >= 0; i--)
+					System.out.println(this.shapes.size());
+					// for (int i = 0 ; i < sdf; i++)
+					for (int i = 0; i < this.shapes.size(); i++)
 					{
-						if (this.shapes.get(i).isAt( Integer.parseInt(params[0]), Integer.parseInt(params[1]) ))
+						System.out.println(i);
+						int id = this.shapes.size() - 1 - i;
+						System.out.println(this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ));
+						if (this.shapes.get(id).isAt( Integer.parseInt(params[2]), Integer.parseInt(params[3]) ))
 						{
-                            this.shapes.remove(i);
+                            this.shapes.remove(id);
 							this.repaint();
 							break;
 						}
@@ -199,7 +206,7 @@ param :
 
 			repaint();
 		}
-		catch (Exception e) {}
+		catch (Exception e) {e.printStackTrace();}
 
 	}
 
